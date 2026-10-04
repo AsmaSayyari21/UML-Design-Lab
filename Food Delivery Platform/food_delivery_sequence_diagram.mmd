@@ -3,7 +3,6 @@ sequenceDiagram
     actor U as User
     participant M as Menu
     participant O as Order
-    participant P as Payment
     participant R as Restaurant
 
     %% Step 1: Browse Menu
@@ -21,30 +20,16 @@ sequenceDiagram
     O->>R: send / receiveorder()
     activate R
     R-->>O: Order accepted
-    O-->>U: Order initialized (Status: Pending)
+    O->>O: updatestatus(Accepted)
+    O-->>U: Order confirmation (Status: Accepted)
 
-    %% Step 4: Payment Processing
-    U->>P: makePayment()
-    activate P
-    P->>P: processPayment()
-    alt Payment Successful
-        P-->>O: Payment status: Success
-        O->>O: updatestatus(Paid)
-        O-->>U: Payment Confirmation
-    else Payment Failed
-        P-->>O: Payment status: Failed
-        O->>O: updatestatus(Cancelled)
-        O-->>U: Payment Failed Notification
-    end
-    deactivate P
-
-    %% Step 5: Food Preparation & Dispatch
+    %% Step 4: Food Preparation
     R->>R: preparefood()
     R->>O: updatestatus(Preparing)
     O-->>U: notifies(Food Being Prepared)
 
-    R->>R: dispatchorder()
-    R->>O: updatestatus(Dispatched)
-    O-->>U: notifies(Order Out for Delivery)
+    %% Step 5: Order Ready / Completion
+    R->>O: updatestatus(Ready)
+    O-->>U: notifies(Order Ready)
     deactivate R
     deactivate O
