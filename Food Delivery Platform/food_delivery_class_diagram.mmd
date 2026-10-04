@@ -37,6 +37,5 @@ classDiagram
     Restaurant "1" -- "1" Menu : offers >
     User "1" -- "1" Menu : view >
     User "1" -- "0..*" Order : places 
-    Order "1..*" -- "1" Restaurant : send 
     Restaurant "1" -- "0..*" Order : receives >
     Order "1" o-- "0..*" user : notifies >
