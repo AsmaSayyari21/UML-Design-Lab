@@ -1,0 +1,43 @@
+classDiagram
+    class User {
+        -String userId
+        -String name
+        -String email
+        -String phoneNumber
+        +addItem()
+        +removeItem()
+        +placeOrder()
+        +makePayment()
+    }
+
+    class Restaurant {
+        -String restaurantId
+        -String name
+        -String address
+        +String foodmenue 
+        +receiveorder()
+        +preparefood()
+        +dispatchorder()
+        +updatemenue()
+    }
+
+    class Menu {
+        +List~MenuItem~ items
+        +boolean availability
+    }
+
+    class Order {
+        -String orderId
+        -OrderStatus status
+        -Date createdAt
+        -double totalAmount
+        +updatestatus()
+    }
+
+
+    Restaurant "1" -- "1" Menu : offers >
+    User "1" -- "1" Menu : view >
+    User "1" -- "0..*" Order : places 
+    Order "1..*" -- "1" Restaurant : send 
+    Restaurant "1" -- "0..*" Order : receives >
+    Order "1" o-- "0..*" user : notifies >
